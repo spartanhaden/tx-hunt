@@ -4,3 +4,11 @@ pydantic
 asyncpg
 uvicorn
 numpy
+pandas
+Pillow
+ipython
+notebook
+matplotlib
+Pillow
+numpy
+opencv-python
