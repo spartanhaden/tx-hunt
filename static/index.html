@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walk Data Visualizer</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <h1>Walk Data Visualizer</h1>
+            
+            <label for="transmitter-select">Select Transmitter:</label>
+            <select id="transmitter-select">
+                <option value="">Loading...</option>
+            </select>
+
+            <div id="walk-layers">
+                <h2>Walk Layers</h2>
+                <div id="walk-toggles"></div>
+            </div>
+        </div>
+
+        <div class="map-container" id="map-container">
+            <!-- The panzoom library will attach here -->
+            <div class="map-content" id="map-content">
+                <!-- Base map image will be loaded here -->
+                <img id="base-map-img" src="" alt="Walkable Map">
+                <!-- Canvas for drawing walk points -->
+                <canvas id="walk-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panzoom library -->
+    <script src='https://cdn.jsdelivr.net/npm/panzoom@9.4.3/dist/panzoom.min.js'></script>
+    <!-- Custom script -->
+    <script src="/static/script.js"></script>
+</body>
+</html> 

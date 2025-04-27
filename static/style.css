@@ -1,0 +1,114 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.controls {
+    width: 250px;
+    padding: 25px;
+    background-color: #e9e9e9;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+    flex-shrink: 0; /* Prevent controls from shrinking */
+}
+
+.controls h1 {
+    margin-top: 0;
+    font-size: 1.4em;
+    margin-bottom: 25px;
+}
+
+.controls label {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.controls select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 25px;
+    box-sizing: border-box;
+}
+
+#walk-layers {
+    margin-top: 20px;
+}
+
+#walk-layers h2 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+#walk-toggles div {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+#walk-toggles input[type="checkbox"] {
+    margin: 0;
+    margin-right: 8px;
+}
+
+#walk-toggles label {
+    font-weight: normal;
+    margin-top: 0;
+    margin-left: 0;
+}
+
+.map-container {
+    flex-grow: 1; /* Allow map container to fill remaining space */
+    overflow: hidden; /* Important for panzoom */
+    position: relative; /* Needed for absolute positioning of canvas */
+    background-color: #ddd; /* Background while map loads or if smaller */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.map-content {
+    position: relative; /* Container for image and canvas */
+    cursor: grab; /* Indicate pannable */
+    /* Let panzoom control the size */
+    width: auto;
+    height: auto;
+}
+
+.map-content:active {
+    cursor: grabbing;
+}
+
+#base-map-img {
+    display: block; /* Remove extra space below image */
+    max-width: none; /* Prevent browser scaling */
+    /* Disable image smoothing */
+    image-rendering: -moz-crisp-edges; /* Firefox */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (Chrome, Safari) */
+    image-rendering: pixelated; /* Standard */
+    -ms-interpolation-mode: nearest-neighbor; /* IE */
+}
+
+#walk-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Will be resized by JS */
+    height: 100%; /* Will be resized by JS */
+    pointer-events: none; /* Allow interaction with map below */
+    /* Disable image smoothing for canvas too */
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+} 
