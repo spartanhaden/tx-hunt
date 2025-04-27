@@ -10,12 +10,12 @@ class RemoteEvaluationEnv:
         team_id: str,
         transmitter_id: str,
         base_url: str = "https://tx-hunt.distspec.com",
+        walk_id: int = 0
     ):
         self.base = base_url.rstrip("/")
         self.team = team_id
         self.tx = transmitter_id
-        self._walk_counter: int = 0
-        self.current_walk_id: Optional[int] = None
+        self.walk_id = walk_id
 
         # --- NEW: one Session for all HTTP calls ---
         self.session = requests.Session()
@@ -31,18 +31,23 @@ class RemoteEvaluationEnv:
         Starts a fresh walk: increments walk_id, calls /start, and returns:
         {"walk_id": int, "ij":(i,j), "xy":(x,y), "rssi": rssi}
         """
-        self._walk_counter += 1
-        self.current_walk_id = self._walk_counter
+        print(f"resetting environment with params")
+        print(f"team_id: {self.team}")
+        print(f"walk_id: {self.walk_id}")
+        print(f"transmitter_id: {self.tx}")
+
         payload = {
             "team_id": self.team,
-            "walk_id": self.current_walk_id,
+            "walk_id": self.walk_id,
             "transmitter_id": self.tx,
         }
 
         resp = self.session.post(f"{self.base}/start", json=payload, timeout=5)
         resp.raise_for_status()
         data = resp.json()
-        data["walk_id"] = self.current_walk_id
+        data["walk_id"] = self.walk_id
+
+        print(f"reset data: {data}")
         return data
 
     def step(self, action: int, circle: Optional[Tuple[int, int, float]] = None) -> Dict:
@@ -52,12 +57,12 @@ class RemoteEvaluationEnv:
         Optionally includes a localization guess: (i, j, r) as a circle.
         Returns: {"walk_id": int, "ij":(i,j), "xy":(x,y), "rssi": rssi}
         """
-        if self.current_walk_id is None:
+        if self.walk_id is None:
             raise RuntimeError("Call reset() before step()")
 
         payload = {
             "team_id": self.team,
-            "walk_id": self.current_walk_id,
+            "walk_id": self.walk_id,
             "transmitter_id": self.tx,
             "action": action,
         }
@@ -66,9 +71,9 @@ class RemoteEvaluationEnv:
 
         resp = self.session.post(f"{self.base}/step", json=payload, timeout=5)
         if resp.status_code == 403:
-            raise ValueError(f"Illegal move in walk {self.current_walk_id}")
+            raise ValueError(f"Illegal move in walk {self.walk_id}")
         resp.raise_for_status()
 
         data = resp.json()
-        data["walk_id"] = self.current_walk_id
+        data["walk_id"] = self.walk_id
         return data
